@@ -3,7 +3,7 @@
 //  VisionCamera
 //
 //  Created by Marc Rousavy on 01.05.21.
-//  Copyright © 2021 mrousavy. All rights reserved.
+//  Copyright ©️ 2021 mrousavy. All rights reserved.
 //
 
 #ifndef FrameProcessorPlugin_h
@@ -33,7 +33,7 @@
  */
 #define VISION_EXPORT_FRAME_PROCESSOR(frame_processor)                              \
                                                                                     \
-+(void)load                                                                         \
+__attribute__((constructor)) static void VISION_CONCAT(initialize_, objc_name)()    \
 {                                                                                   \
   [FrameProcessorPluginRegistry addFrameProcessorPlugin:@"__" @ #frame_processor callback:^id(Frame* frame, NSArray<id>* args) { \
     return frame_processor(frame, args);                                           \
@@ -53,7 +53,7 @@ objc_name : NSObject<FrameProcessorPluginBase>                                  
 @end                                                                                \
 @implementation objc_name (FrameProcessorPlugin)                                    \
                                                                                     \
-+(void)load                                                                          \
+__attribute__((constructor)) static void VISION_CONCAT(initialize_, objc_name)()    \
 {                                                                                   \
   [FrameProcessorPluginRegistry addFrameProcessorPlugin:@"__" @ #name callback:^id(Frame* frame, NSArray<id>* args) {    \
     return [objc_name callback:frame withArgs:args];                               \
